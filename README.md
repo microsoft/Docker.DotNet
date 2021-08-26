@@ -153,8 +153,10 @@ To obtain this stream you can use:
 
 ```csharp
 CancellationTokenSource cancellation = new CancellationTokenSource();
-Stream stream = await client.System.MonitorEventsAsync(new ContainerEventsParameters(), new Progress<JSONMessage>(), cancellation.Token);
-// Initialize a StreamReader...
+var progress = new Progress<JSONMessage>();
+progress.ProgressChanged+= progressChangedHandler;
+
+var resultTask = client.System.MonitorEventsAsync(new ContainerEventsParameters(), progress, cancellation.Token);
 ```
 
 You can cancel streaming using the CancellationToken. On the other hand, if you wish to continuously stream, you can simply pass `CancellationToken.None`.
