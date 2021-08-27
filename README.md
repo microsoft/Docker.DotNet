@@ -105,17 +105,31 @@ await client.Images.CreateImageAsync(
     new Progress<JSONMessage>());
 ```
 
+
+#### Example: Create a container
+
+The following code will create a new container of the previously fetched image.
+
+```csharp
+await client.Containers.CreateContainerAsync(new CreateContainerParameters()
+    {
+        Image = "fedora/memcached",
+        HostConfig = new HostConfig()
+        {
+            DNS = new[] { "8.8.8.8", "8.8.4.4" }
+        }
+    });
+```
+
 #### Example: Start a container
 
-The following code will start the created container with specified `HostConfig` object. This object is optional, therefore you can pass a null.
+The following code will start the created container.
 
 ```csharp
 await client.Containers.StartContainerAsync(
     "39e3317fd258",
-    new HostConfig
-    {
-	    DNS = new[] { "8.8.8.8", "8.8.4.4" }
-    });
+    new ContainerStartParameters()
+    );
 ```
 
 #### Example: Stop a container
