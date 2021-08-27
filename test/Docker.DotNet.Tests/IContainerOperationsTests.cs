@@ -808,5 +808,17 @@ namespace Docker.DotNet.Tests
             Assert.InRange(stopWatch.Elapsed, delay.Subtract(tolerance), delay.Add(tolerance));
             Assert.True(waitContainerTask.IsCanceled);
         }
+
+        [Fact]
+        public async Task CreateImageAsync_NonexistantImage_ThrowsDockerImageNotFoundException()
+        {
+            var parameters = new CreateContainerParameters
+            {
+                Image = "no-such-image-ytfghbkufhresdhtrjygvb",
+            };
+            Func<Task> op = async () => await _dockerClient.Containers.CreateContainerAsync(parameters);
+
+            await Assert.ThrowsAsync<DockerImageNotFoundException>(op);
+        }
     }
 }

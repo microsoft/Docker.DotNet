@@ -20,6 +20,13 @@ namespace Docker.DotNet
                 throw new DockerContainerNotFoundException(statusCode, responseBody);
             }
         };
+        internal static readonly ApiResponseErrorHandlingDelegate NoSuchImageHandler = (statusCode, responseBody) =>
+        {
+            if (statusCode == HttpStatusCode.NotFound)
+            {
+                throw new DockerImageNotFoundException(statusCode, responseBody);
+            }
+        };
 
         private readonly DockerClient _client;
 
@@ -55,7 +62,7 @@ namespace Docker.DotNet
             }
 
             var data = new JsonRequestContent<CreateContainerParameters>(parameters, this._client.JsonSerializer);
-            var response = await this._client.MakeRequestAsync(new[] { NoSuchContainerHandler }, HttpMethod.Post, "containers/create", qs, data, cancellationToken).ConfigureAwait(false);
+            var response = await this._client.MakeRequestAsync(new[] { NoSuchImageHandler }, HttpMethod.Post, "containers/create", qs, data, cancellationToken).ConfigureAwait(false);
             return this._client.JsonSerializer.DeserializeObject<CreateContainerResponse>(response.Body);
         }
 
