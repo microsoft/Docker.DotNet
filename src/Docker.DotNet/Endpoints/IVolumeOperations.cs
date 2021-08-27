@@ -17,6 +17,15 @@ namespace Docker.DotNet
         Task<VolumesListResponse> ListAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// List volumes
+        /// </summary>
+        /// <remarks>
+        /// 200 - No error.
+        /// 500 - Server error.
+        /// </remarks>
+        Task<VolumesListResponse> ListAsync(VolumesListParameters parameters, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Create a volume.
         /// </summary>
         /// <remarks>

@@ -22,6 +22,13 @@ namespace Docker.DotNet
             return this._client.JsonSerializer.DeserializeObject<VolumesListResponse>(response.Body);
         }
 
+        async Task<VolumesListResponse> IVolumeOperations.ListAsync(VolumesListParameters parameters, CancellationToken cancellationToken)
+        {
+            var queryParameters = parameters == null ? null : new QueryString<VolumesListParameters>(parameters);
+            var response = await this._client.MakeRequestAsync(this._client.NoErrorHandlers, HttpMethod.Get, "volumes", queryParameters, null, cancellationToken).ConfigureAwait(false);
+            return this._client.JsonSerializer.DeserializeObject<VolumesListResponse>(response.Body);
+        }
+
         async Task<VolumeResponse> IVolumeOperations.CreateAsync(VolumesCreateParameters parameters, CancellationToken cancellationToken)
         {
             if (parameters == null)
