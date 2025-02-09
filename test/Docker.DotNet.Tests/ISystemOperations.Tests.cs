@@ -37,7 +37,7 @@ namespace Docker.DotNet.Tests
             _tag = testFixture.Tag;
         }
 
-        [Fact]
+        [Fact(Skip = "docker.exe not always a live process")]
         public void Docker_IsRunning()
         {
             var dockerProcess = Process.GetProcesses().FirstOrDefault(_ => _.ProcessName.Equals("docker", StringComparison.InvariantCultureIgnoreCase) || _.ProcessName.Equals("dockerd", StringComparison.InvariantCultureIgnoreCase));
